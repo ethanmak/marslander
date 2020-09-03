@@ -107,6 +107,7 @@ public:
   double abs2() const { return (x*x + y*y + z*z); }
   double abs() const { return sqrt(this->abs2()); }
   vector3d norm() const { double s(this->abs()); if (s==0) return *this; else return vector3d(x/s, y/s, z/s); }
+  vector3d* copy() const { return new vector3d(x,y,z); }
   friend ostream& operator << (ostream &out, const vector3d &v) { out << v.x << ' ' << v.y << ' ' << v.z; return out; }
   double x, y, z;
 private:

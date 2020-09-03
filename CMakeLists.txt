@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(MarsLander CXX)
 
 # add the executable
-add_executable(spring spring.cpp)
+#add_executable(spring spring.cpp)
 add_executable(simulation lander_graphics.cpp lander.h lander.cpp)
 
 # add dependencies
