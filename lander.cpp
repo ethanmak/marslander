@@ -15,7 +15,7 @@
 #include "lander.h"
 #include "pid_controller.h"
 vector3d* prev_position = NULL;
-PIDController autopilot_feedpack(0.2,0,0.5,0,0.3,-0.5);
+PIDController autopilot_feedpack(0.5,0,0.5,0,0.3,-0.5);
 
 vector3d orientation_to_direction(vector3d orientation) {
     return vector3d(sin(orientation.y)*cos(orientation.x),cos(orientation.y)*sin(orientation.x), cos(orientation.x));
@@ -24,10 +24,13 @@ vector3d orientation_to_direction(vector3d orientation) {
 void autopilot(void)
 // Autopilot to adjust the engine throttle, parachute and attitude control
 {
-    double kH = 0.01;
+    double kH = 0.05;
     double altitude = position.abs() - MARS_RADIUS;
     double output = autopilot_feedpack.update(kH*altitude + (velocity*position.norm()));
     throttle += output;
+    if (safe_to_deploy_parachute() && throttle > 0)
+        parachute_status = DEPLOYED;
+
 }
 
 void numerical_dynamics(void)

@@ -6,6 +6,7 @@ project(MarsLander CXX)
 # add the executable
 #add_executable(spring spring.cpp)
 add_executable(simulation lander_graphics.cpp lander.h lander.cpp pid_controller.h pid_controller.cpp)
+add_executable(spring spring.cpp)
 
 # add dependencies
 find_package(OpenGL REQUIRED)
