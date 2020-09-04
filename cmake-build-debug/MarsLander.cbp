@@ -91,6 +91,12 @@
 		<Unit filename="/home/ethanmak/CLionProjects/marslander/lander_graphics.cpp">
 			<Option target="simulation"/>
 		</Unit>
+		<Unit filename="/home/ethanmak/CLionProjects/marslander/pid_controller.cpp">
+			<Option target="simulation"/>
+		</Unit>
+		<Unit filename="/home/ethanmak/CLionProjects/marslander/pid_controller.h">
+			<Option target="simulation"/>
+		</Unit>
 		<Unit filename="/home/ethanmak/CLionProjects/marslander/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

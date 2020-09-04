@@ -13,11 +13,21 @@
 // ahg@eng.cam.ac.uk and gc121@eng.cam.ac.uk.
 
 #include "lander.h"
+#include "pid_controller.h"
 vector3d* prev_position = NULL;
+PIDController autopilot_feedpack(0.2,0,0.5,0,0.3,-0.5);
+
+vector3d orientation_to_direction(vector3d orientation) {
+    return vector3d(sin(orientation.y)*cos(orientation.x),cos(orientation.y)*sin(orientation.x), cos(orientation.x));
+}
+
 void autopilot(void)
 // Autopilot to adjust the engine throttle, parachute and attitude control
 {
-    // INSERT YOUR CODE HERE
+    double kH = 0.01;
+    double altitude = position.abs() - MARS_RADIUS;
+    double output = autopilot_feedpack.update(kH*altitude + (velocity*position.norm()));
+    throttle += output;
 }
 
 void numerical_dynamics(void)
@@ -26,9 +36,10 @@ void numerical_dynamics(void)
 {
     double lander_mass = UNLOADED_LANDER_MASS + fuel*FUEL_DENSITY;
     vector3d gravity = -GRAVITY*MARS_MASS*lander_mass/position.abs2() * position.norm();
-    vector3d drag = atmospheric_density(position) * DRAG_COEF_LANDER * velocity.abs2() * velocity.norm();
+    vector3d rad_orientation = orientation * M_PI / 180;
+    vector3d drag = -1 * atmospheric_density(position) * DRAG_COEF_LANDER * (M_PI * LANDER_SIZE/2 * LANDER_SIZE/2) * velocity.abs2() * velocity.norm();
     vector3d thrust = thrust_wrt_world();
-    vector3d force = gravity + thrust;
+    vector3d force = gravity + thrust + drag;
     vector3d* temp_prev = position.copy();
     if (prev_position != NULL) {
         position = 2 * position - *prev_position + force / lander_mass * delta_t * delta_t;
